@@ -10,8 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Date;
@@ -50,18 +48,16 @@ public class CompensationServiceImplTest {
         testCompensation.setEffectiveDate(new Date());
 
         // Create checks
-        ResponseEntity<Compensation> createdCompensationResponse = restTemplate.postForEntity(createCompensationUrl,
-                testCompensation, Compensation.class);
-        assertEquals(HttpStatus.OK, createdCompensationResponse.getStatusCode());
-        Compensation createdCompensation = createdCompensationResponse.getBody();
+        Compensation createdCompensation = restTemplate.postForEntity(createCompensationUrl,
+                testCompensation, Compensation.class).getBody();
+
         assertNotNull(createdCompensation);
         assertCompensationEquivalence(testCompensation, createdCompensation);
 
         // Read checks
-        ResponseEntity<Compensation> readCompensationResponse = restTemplate.getForEntity(readCompensationUrl,
-                Compensation.class, createdCompensation.getEmployee().getEmployeeId());
-        assertEquals(HttpStatus.OK, readCompensationResponse.getStatusCode());
-        Compensation readCompensation = readCompensationResponse.getBody();
+        Compensation readCompensation = restTemplate.getForEntity(readCompensationUrl,
+                Compensation.class, createdCompensation.getEmployee().getEmployeeId()).getBody();
+
         assertNotNull(readCompensation);
         assertCompensationEquivalence(readCompensation, createdCompensation);
     }

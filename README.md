@@ -16,7 +16,7 @@ These are the three new endpoints dealing with compensation and reporting struct
     * RESPONSE: Compensation
 * READ Reporting Structure
     * HTTP Method: GET 
-    * URL: localhost:8080/reporting/{employeeId}
+    * URL: localhost:8080/employee/{employeeId}/reporting-structure
     * RESPONSE: ReportingStructure
 ```
 ## Coding Challenge
