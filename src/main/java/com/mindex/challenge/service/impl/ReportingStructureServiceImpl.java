@@ -16,24 +16,39 @@ public class ReportingStructureServiceImpl implements ReportingStructureService 
 
     private static final Logger LOG = LoggerFactory.getLogger(ReportingStructureServiceImpl.class);
 
+    private final EmployeeService employeeService;
+
     @Autowired
-    private EmployeeService employeeService;
+    public ReportingStructureServiceImpl(EmployeeService employeeService) {
+        this.employeeService = employeeService;
+    }
+
     @Override
     public ReportingStructure generate(String employeeId) {
         LOG.debug("Generating reporting structure for employee id [{}]", employeeId);
-        Employee employee = employeeService.read(employeeId);
-        return new ReportingStructure(employee, findNumOfDirectReports(employee));
+        try {
+            Employee employee = employeeService.read(employeeId);
+            return new ReportingStructure(employee, findNumberOfDirectReports(employee));
+        } catch (RuntimeException ex) {
+            LOG.error(ex.getMessage());
+            throw new RuntimeException("Invalid employeeId: [" + employeeId + "] to generate reporting structure request");
+        }
     }
 
-    private int findNumOfDirectReports(Employee employee) {
+    private int findNumberOfDirectReports(Employee employee) {
         int numOfDirectReports = 0;
         List<Employee> directReports = employee.getDirectReports();
         if (directReports != null) {
             numOfDirectReports = directReports.size();
             for (Employee directReport : directReports) {
-                numOfDirectReports += findNumOfDirectReports(directReport);
+                directReport = readEmployeeIfNecessary(directReport);
+                numOfDirectReports += findNumberOfDirectReports(directReport);
             }
         }
         return numOfDirectReports;
+    }
+
+    private Employee readEmployeeIfNecessary(Employee employee) {
+        return employee.getFirstName() == null ? employeeService.read(employee.getEmployeeId()) : employee;
     }
 }

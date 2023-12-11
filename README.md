@@ -1,5 +1,24 @@
 # mindex-java-code-challenge
+## Solution
+Here is my solution for the coding challenge provided. 
 
+### New Endpoints
+These are the three new endpoints dealing with compensation and reporting structure.
+```
+* CREATE Compensation
+    * HTTP Method: POST 
+    * URL: localhost:8080/compensation
+    * PAYLOAD: Compensation
+    * RESPONSE: Compensation
+* READ Compensation
+    * HTTP Method: GET 
+    * URL: localhost:8080/compensation/{employeeId}
+    * RESPONSE: Compensation
+* READ Reporting Structure
+    * HTTP Method: GET 
+    * URL: localhost:8080/reporting/{employeeId}
+    * RESPONSE: ReportingStructure
+```
 ## Coding Challenge
 ### What's Provided
 A simple [Spring Boot](https://projects.spring.io/spring-boot/) web application has been created and bootstrapped

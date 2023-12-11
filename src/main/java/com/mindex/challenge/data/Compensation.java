@@ -1,7 +1,5 @@
 package com.mindex.challenge.data;
 
-import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
-
 import java.util.Date;
 
 public class Compensation {

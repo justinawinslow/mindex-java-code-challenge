@@ -10,8 +10,12 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class CompensationController {
     private static final Logger LOG = LoggerFactory.getLogger(CompensationController.class);
+    private final CompensationService compensationService;
+
     @Autowired
-    private CompensationService compensationService;
+    public CompensationController(CompensationService compensationService) {
+        this.compensationService = compensationService;
+    }
 
     @PostMapping("/compensation")
     public Compensation create(@RequestBody Compensation compensation) {
